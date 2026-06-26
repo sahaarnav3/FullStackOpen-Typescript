@@ -1,3 +1,4 @@
+import { isNotNumber } from "./utils.ts";
 interface ExerciseStats {
   periodLength: number;
   trainingDays: number;
@@ -46,4 +47,18 @@ const calculateExercise = (
   };
 };
 
-console.log(calculateExercise([3, 0, 2, 4.5, 0, 3, 1], 2));
+// console.log(calculateExercise([3, 0, 2, 4.5, 0, 3, 1], 2));
+
+try {
+  const dailyValue: number[] = process.argv.slice(3).map((val) => {
+    if (isNotNumber(val)) throw new Error("Provided Values were not numbers!");
+    return Number(val);
+  });
+  const targetValue: number = Number(process.argv[2]);
+  console.log(dailyValue, targetValue);
+  console.log(calculateExercise(dailyValue, targetValue));
+} catch (error: unknown) {
+  let errorMessage = "Something bad happened.";
+  if (error instanceof Error) errorMessage += " Error: " + error;
+  console.log(errorMessage);
+}
