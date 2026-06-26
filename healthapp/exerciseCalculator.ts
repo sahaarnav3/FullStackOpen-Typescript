@@ -1,0 +1,49 @@
+interface ExerciseStats {
+  periodLength: number;
+  trainingDays: number;
+  success: boolean;
+  rating: number;
+  ratingDescription: string;
+  target: number;
+  average: number;
+}
+
+const calculateExercise = (
+  dailyValue: number[],
+  targetValue: number,
+): ExerciseStats => {
+  let periodLength = dailyValue.length;
+  let trainingDays = 0;
+  let totalHrs = 0;
+  dailyValue.forEach((hr) => {
+    if (hr > 0) trainingDays++;
+    totalHrs += hr;
+  });
+  let rating = 0;
+  let ratingDescription = "";
+  let average = totalHrs / periodLength;
+  let workoutPercentage = average / targetValue;
+  if (workoutPercentage <= 0.5) {
+    rating = 3;
+    ratingDescription = "Not Good. Please Work Harder";
+  } else if (workoutPercentage < 1) {
+    rating = 2;
+    ratingDescription = "Not too bad but could be better";
+  } else {
+    rating = 1;
+    ratingDescription = "Superb. Keep up the momentum";
+  }
+  let success = average >= targetValue ? true : false;
+
+  return {
+    periodLength,
+    trainingDays,
+    success,
+    rating,
+    ratingDescription,
+    target: targetValue,
+    average,
+  };
+};
+
+console.log(calculateExercise([3, 0, 2, 4.5, 0, 3, 1], 2));

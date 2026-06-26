@@ -1,5 +1,5 @@
 
-const calculateBmi = (height: number, weight: number) : String => {
+const calculateBmi = (height: number, weight: number) : string => {
     if(height < 0)
         return 'Enter Proper Height'
     else 
