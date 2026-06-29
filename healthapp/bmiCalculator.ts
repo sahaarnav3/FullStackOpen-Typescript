@@ -18,16 +18,21 @@ const calculateBmi = (height: number, weight: number): string => {
 };
 
 // console.log(calculateBmi(180, 74))
-try {
-  if (isNotNumber(process.argv[2]) || isNotNumber(process.argv[3]))
-    throw new Error("Provided Values were not numbers!");
-  const height: number = Number(process.argv[2]);
-  const weight: number = Number(process.argv[3]);
-  console.log(calculateBmi(height, weight));
-} catch (error) {
-  let errorMessage = "Something bad happened.";
-  if (error instanceof Error) errorMessage += " Error: " + error;
-  console.log(errorMessage);
+//process.argv[1] is absolute path of where the file is entering from
+// import.meta.filename is absolute path of current file
+// so equal here means in command line only calculateBmi is called and (it will be non equal when called from index.ts since process.argv[1] will point to index then)
+if (process.argv[1] === import.meta.filename) {
+  try {
+    if (isNotNumber(process.argv[2]) || isNotNumber(process.argv[3]))
+      throw new Error("Provided Values were not numbers!");
+    const height: number = Number(process.argv[2]);
+    const weight: number = Number(process.argv[3]);
+    console.log(calculateBmi(height, weight));
+  } catch (error) {
+    let errorMessage = "Something bad happened.";
+    if (error instanceof Error) errorMessage += " Error: " + error;
+    console.log(errorMessage);
+  }
 }
 
 export default calculateBmi;
