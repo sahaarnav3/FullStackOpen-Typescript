@@ -13,17 +13,19 @@ const calculateExercise = (
   dailyValue: number[],
   targetValue: number,
 ): ExerciseStats => {
-  let periodLength = dailyValue.length;
+  const periodLength = dailyValue.length;
   let trainingDays = 0;
   let totalHrs = 0;
   dailyValue.forEach((hr) => {
     if (hr > 0) trainingDays++;
     totalHrs += hr;
   });
+  // eslint-disable-next-line no-useless-assignment
   let rating = 0;
+  // eslint-disable-next-line no-useless-assignment
   let ratingDescription = "";
-  let average = totalHrs / periodLength;
-  let workoutPercentage = average / targetValue;
+  const average = totalHrs / periodLength;
+  const workoutPercentage = average / targetValue;
   if (workoutPercentage <= 0.5) {
     rating = 3;
     ratingDescription = "Not Good. Please Work Harder";
@@ -34,7 +36,7 @@ const calculateExercise = (
     rating = 1;
     ratingDescription = "Superb. Keep up the momentum";
   }
-  let success = average >= targetValue ? true : false;
+  const success = average >= targetValue ? true : false;
 
   return {
     periodLength,

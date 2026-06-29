@@ -4,7 +4,7 @@ const calculateBmi = (height: number, weight: number): string => {
   if (height < 0) return "Enter Proper Height";
   else height /= 100;
   if (weight < 0) return "Enter Proper Weight";
-  let bmiValue = weight / (height * height);
+  const bmiValue = weight / (height * height);
 
   if (bmiValue < 16) return "Underwight (Severe thinness)";
   if (bmiValue < 17) return "Underweight (Moderate thinness)";
