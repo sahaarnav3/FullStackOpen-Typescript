@@ -9,7 +9,7 @@ interface ExerciseStats {
   average: number;
 }
 
-const calculateExercise = (
+export const calculateExercise = (
   dailyValue: number[],
   targetValue: number,
 ): ExerciseStats => {
@@ -51,16 +51,19 @@ const calculateExercise = (
 
 // console.log(calculateExercise([3, 0, 2, 4.5, 0, 3, 1], 2));
 
-try {
-  const dailyValue: number[] = process.argv.slice(3).map((val) => {
-    if (isNotNumber(val)) throw new Error("Provided Values were not numbers!");
-    return Number(val);
-  });
-  const targetValue: number = Number(process.argv[2]);
-  console.log(dailyValue, targetValue);
-  console.log(calculateExercise(dailyValue, targetValue));
-} catch (error: unknown) {
-  let errorMessage = "Something bad happened.";
-  if (error instanceof Error) errorMessage += " Error: " + error;
-  console.log(errorMessage);
+if (process.argv[1] === import.meta.filename) {
+  try {
+    const dailyValue: number[] = process.argv.slice(3).map((val) => {
+      if (isNotNumber(val))
+        throw new Error("Provided Values were not numbers!");
+      return Number(val);
+    });
+    const targetValue: number = Number(process.argv[2]);
+    console.log(dailyValue, targetValue);
+    console.log(calculateExercise(dailyValue, targetValue));
+  } catch (error: unknown) {
+    let errorMessage = "Something bad happened.";
+    if (error instanceof Error) errorMessage += " Error: " + error;
+    console.log(errorMessage);
+  }
 }
