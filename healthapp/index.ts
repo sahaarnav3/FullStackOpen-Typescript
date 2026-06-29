@@ -21,16 +21,18 @@ app.get("/bmi", (req, res) => {
 });
 
 app.post("/exercises", (req, res) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { daily_exercises, target } = req.body;
   if (!daily_exercises || !target)
     return res.status(400).json({ error: "parameters missing" });
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   for (let i = 0; i < daily_exercises.length; i++)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (isNotNumber(daily_exercises[i]))
-      return res
-        .status(400)
-        .json({ error: "malformatted parameters" });
+      return res.status(400).json({ error: "malformatted parameters" });
   if (isNotNumber(target))
     return res.status(400).json({ error: "malformatted parameters" });
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const exerciseResponse = calculateExercise(daily_exercises, target);
   return res.status(200).json(exerciseResponse);
 });
