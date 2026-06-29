@@ -29,3 +29,5 @@ try {
   if (error instanceof Error) errorMessage += " Error: " + error;
   console.log(errorMessage);
 }
+
+export default calculateBmi;
