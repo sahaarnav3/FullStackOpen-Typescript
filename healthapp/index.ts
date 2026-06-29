@@ -28,14 +28,14 @@ app.post("/exercises", (req, res) => {
     if (isNotNumber(daily_exercises[i]))
       return res
         .status(400)
-        .json({ error: "malformatted values for daily exercises" });
+        .json({ error: "malformatted parameters" });
   if (isNotNumber(target))
-    return res.status(400).json({ error: "malformatted value for target" });
+    return res.status(400).json({ error: "malformatted parameters" });
   const exerciseResponse = calculateExercise(daily_exercises, target);
   return res.status(200).json(exerciseResponse);
 });
 
-const PORT = 3003;
+const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
