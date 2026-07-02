@@ -4,7 +4,6 @@ import patientsRouter from "./routes/patients.ts";
 import cors from "cors";
 const app = express();
 app.use(express.json());
-
 const PORT = 3001;
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
