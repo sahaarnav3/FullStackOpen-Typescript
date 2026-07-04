@@ -1,8 +1,11 @@
-import express, { type Response } from "express";
+import express, { type Response, type Request } from "express";
 import patientService from "../services/patientService.ts";
-import type { NonSensitivePatientEntry } from "../types.ts";
-import { parseNewPatientEntry } from "../utils.ts";
-import { z } from "zod";
+import {
+  type NonSensitivePatientEntry,
+  type NewPatientEntry,
+  type PatientEntry,
+} from "../types.ts";
+import { newPatientParser, errorMiddleware } from "../middleware.ts";
 
 const router = express.Router();
 
@@ -11,16 +14,18 @@ router.get("/", (_req, res: Response<NonSensitivePatientEntry[]>) => {
   res.send(patientData);
 });
 
-router.post("/", (req, res) => {
-  try {
-    const newPatientEntry = parseNewPatientEntry(req.body);
-    const addedEntry = patientService.addNewPatient(newPatientEntry);
-    return res.json(addedEntry);
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError)
-      return res.status(400).send({ error: error.issues });
-    else return res.status(400).send({ error: "unknown error" });
-  }
-});
+router.post(
+  "/",
+  newPatientParser,
+  (
+    req: Request<unknown, unknown, NewPatientEntry>,
+    res: Response<PatientEntry>,
+  ) => {
+      const addedEntry = patientService.addNewPatient(req.body);
+      return res.json(addedEntry);
+  },
+);
+
+router.use(errorMiddleware);
 
 export default router;
