@@ -11,12 +11,13 @@ const AddNewFlight = ({ flightData, setFlightData }: FlightDataProps) => {
   const [date, setDate] = useState("");
   const [weather, setWeather] = useState("");
   const [visibility, setVisibility] = useState("");
+  const [comment, setComment] = useState("");
 
   const addFlightHandler = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (date && weather && visibility)
       flightServices
-        .createFlightData({ date, weather, visibility })
+        .createFlightData({ id: flightData.length + 1, date, weather, visibility, comment })
         .then((data) => setFlightData(flightData.concat(data)));
   };
 
@@ -59,6 +60,11 @@ const AddNewFlight = ({ flightData, setFlightData }: FlightDataProps) => {
           <option value="ok">Ok</option>
           <option value="poor">Poor</option>
         </select>
+      </label>
+      <br />
+      <label>
+        Comment: {" "}
+        <input type="text" onChange={e => setComment(e.target.value)} />
       </label>
       <br />
       <button type="submit">Submit</button>
