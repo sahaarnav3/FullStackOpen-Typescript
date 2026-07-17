@@ -17,8 +17,19 @@ const AddNewFlight = ({ flightData, setFlightData }: FlightDataProps) => {
     e.preventDefault();
     if (date && weather && visibility)
       flightServices
-        .createFlightData({ id: flightData.length + 1, date, weather, visibility, comment })
+        .createFlightData({
+          id: flightData.length + 1,
+          date,
+          weather,
+          visibility,
+          comment,
+        })
         .then((data) => setFlightData(flightData.concat(data)));
+
+    setDate("");
+    setWeather("");
+    setVisibility("");
+    setComment("");
   };
 
   return (
@@ -31,40 +42,69 @@ const AddNewFlight = ({ flightData, setFlightData }: FlightDataProps) => {
       <br />
       <label>
         Weather:{" "}
-        <select
-          onChange={(e) => setWeather(e.target.value)}
-          defaultValue="default"
-        >
-          <option disabled value="default">
-            Please Select an option
-          </option>
-          <option value="sunny">Sunny</option>
-          <option value="rainy">Rainy</option>
-          <option value="cloudy">Cloudy</option>
-          <option value="stormy">Stormy</option>
-          <option value="windy">Windy</option>
-        </select>
+        <input
+          type="radio"
+          name="weather"
+          onClick={() => setWeather("sunny")}
+        />
+        sunny{" "}
+        <input
+          type="radio"
+          name="weather"
+          onClick={() => setWeather("rainy")}
+        />
+        rainy{" "}
+        <input
+          type="radio"
+          name="weather"
+          onClick={() => setWeather("cloudy")}
+        />
+        cloudy{" "}
+        <input
+          type="radio"
+          name="weather"
+          onClick={() => setWeather("stormy")}
+        />
+        stormy{" "}
+        <input
+          type="radio"
+          name="weather"
+          onClick={() => setWeather("windy")}
+        />
+        windy{" "}
       </label>
       <br />
       <label>
         Visibility:{" "}
-        <select
-          onChange={(e) => setVisibility(e.target.value)}
-          defaultValue="default"
-        >
-          <option disabled value="default">
-            Please Select an option
-          </option>
-          <option value="great">Great</option>
-          <option value="good">Good</option>
-          <option value="ok">Ok</option>
-          <option value="poor">Poor</option>
-        </select>
+        <input
+          type="radio"
+          name="visibility"
+          onClick={() => setVisibility("great")}
+        />
+        great{" "}
+        <input
+          type="radio"
+          name="visibility"
+          onClick={() => setVisibility("good")}
+        />
+        good{" "}
+        <input
+          type="radio"
+          name="visibility"
+          onClick={() => setVisibility("ok")}
+        />
+        ok{" "}
+        <input
+          type="radio"
+          name="visibility"
+          onClick={() => setVisibility("poor")}
+        />
+        poor{" "}
       </label>
       <br />
       <label>
-        Comment: {" "}
-        <input type="text" onChange={e => setComment(e.target.value)} />
+        Comment:{" "}
+        <input type="text" onChange={(e) => setComment(e.target.value)} />
       </label>
       <br />
       <button type="submit">Submit</button>
