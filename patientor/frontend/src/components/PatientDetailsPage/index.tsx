@@ -3,6 +3,9 @@ import patientService from "../../services/patients";
 import type { Patient, Diagnosis } from "../../types";
 import { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
+import MaleIcon from "@mui/icons-material/Male";
+import FemaleIcon from "@mui/icons-material/Female";
+import EntryDetails from "./EntryDetails";
 
 const PatientDetailsPage = () => {
   const patientId = useParams().id;
@@ -19,13 +22,19 @@ const PatientDetailsPage = () => {
   }, [patientId]);
 
   return (
-    patientData && (
+    patientData &&
+    diagnosesCodes && (
       <div>
         <Typography
           variant="h4"
           sx={{ marginBottom: "0.5em", fontWeight: 500 }}
         >
-          {patientData.name} <b>{patientData.gender === "male" ? "♂" : "♀"}</b>
+          {patientData.name}{" "}
+          {patientData.gender === "male" ? (
+            <MaleIcon fontSize="large" />
+          ) : (
+            <FemaleIcon fontSize="large" />
+          )}
         </Typography>
         <div>
           <Typography variant="subtitle1">ssn: {patientData.ssn}</Typography>
@@ -40,29 +49,10 @@ const PatientDetailsPage = () => {
           <Typography variant="h5" sx={{ margin: "1em 0" }}>
             entries
           </Typography>
-          {patientData.entries.map((entry) => (
-            <div key={entry.id}>
-              <Typography variant="subtitle1">
-                {entry.date} {entry.description}
-              </Typography>
-              {entry?.diagnosisCodes && (
-                <ul>
-                  {entry.diagnosisCodes.map((code) => {
-                    const diagnosisDetails = diagnosesCodes?.find(
-                      (diagnosis) => diagnosis.code === code,
-                    );
-                    return (
-                      <li key={code}>
-                        <Typography variant="subtitle1">
-                          {diagnosisDetails?.code} {diagnosisDetails?.name}
-                        </Typography>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </div>
-          ))}
+          <EntryDetails
+            entries={patientData?.entries}
+            diagnosesCodes={diagnosesCodes}
+          />
         </div>
       </div>
     )
