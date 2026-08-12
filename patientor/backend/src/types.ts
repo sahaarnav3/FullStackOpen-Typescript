@@ -21,6 +21,13 @@ const BaseEntrySchema = z.object({
   specialist: z.string(),
   diagnosisCodes: z.array(z.string()).optional(),
 });
+const NewBaseEntrySchema = z.object({
+  description: z.string(),
+  date: z.string(),
+  specialist: z.string(),
+  diagnosisCodes: z.array(z.string()).optional(),
+});
+
 
 const DischargeSchema = z.object({
   date: z.string(),
@@ -44,8 +51,17 @@ export const HospitalEntrySchema = BaseEntrySchema.extend({
   type: z.literal("Hospital"),
   discharge: DischargeSchema,
 });
+export const NewHospitalEntrySchema = NewBaseEntrySchema.extend({
+  type: z.literal("Hospital"),
+  discharge: DischargeSchema,
+});
 
 export const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({
+  type: z.literal("OccupationalHealthcare"),
+  employerName: z.string(),
+  sickLeave: SickLeaveSchema.optional(),
+});
+export const NewOccupationalHealthcareEntrySchema = NewBaseEntrySchema.extend({
   type: z.literal("OccupationalHealthcare"),
   employerName: z.string(),
   sickLeave: SickLeaveSchema.optional(),
@@ -55,14 +71,24 @@ export const HealthCheckEntrySchema = BaseEntrySchema.extend({
   type: z.literal("HealthCheck"),
   healthCheckRating: HealthCheckRatingSchema,
 });
+export const NewHealthCheckEntrySchema = NewBaseEntrySchema.extend({
+  type: z.literal("HealthCheck"),
+  healthCheckRating: HealthCheckRatingSchema,
+});
 
 export const EntrySchema = z.discriminatedUnion("type", [
   HospitalEntrySchema,
   OccupationalHealthcareEntrySchema,
   HealthCheckEntrySchema,
 ]);
+export const NewEntrySchema = z.discriminatedUnion("type", [
+  NewHospitalEntrySchema,
+  NewOccupationalHealthcareEntrySchema,
+  NewHealthCheckEntrySchema,
+]);
 
 export type Entry = z.infer<typeof EntrySchema>;
+export type NewEntry = z.infer<typeof NewEntrySchema>;
 
 export const NewPatientEntrySchema = z.object({
   name: z.string().trim().min(1, { message: "Name cannot be empty" }),
