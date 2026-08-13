@@ -28,11 +28,13 @@ const AddEntryFrom = ({
 }: DiagnosisProps) => {
   const [showForm, setShowForm] = useState<boolean>(false);
 
-  const [entryType, setEntryType] = useState<NewEntry["type"] | "">("");
+  const [entryType, setEntryType] = useState<NewEntry["type"] | "">(
+    "OccupationalHealthcare",
+  );
   const [date, setDate] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [specialist, setSpecialist] = useState<string>("");
-  const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
+  const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>(["S62.5"]);
   const [healthCheckRating, setHealthCheckRating] = useState<number>(0);
 
   function diagnosesCodeComponent() {
