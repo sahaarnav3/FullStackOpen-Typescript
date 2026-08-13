@@ -6,6 +6,7 @@ import { Typography } from "@mui/material";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import EntryDetails from "./EntryDetails";
+import AddEntryFrom from "./AddEntryForm";
 
 const PatientDetailsPage = () => {
   const patientId = useParams().id;
@@ -45,6 +46,7 @@ const PatientDetailsPage = () => {
             date of birth: {patientData.dateOfBirth}
           </Typography>
         </div>
+        <AddEntryFrom allDiagnosesCodes={diagnosesCodes} patientId={patientData.id}/>
         <div>
           <Typography variant="h5" sx={{ margin: "1em 0" }}>
             entries

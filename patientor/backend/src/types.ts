@@ -30,8 +30,8 @@ const NewBaseEntrySchema = z.object({
 
 
 const DischargeSchema = z.object({
-  date: z.string(),
-  criteria: z.string(),
+  date: z.string().optional(),
+  criteria: z.string().optional(),
 });
 
 const SickLeaveSchema = z.object({

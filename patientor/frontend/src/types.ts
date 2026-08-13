@@ -17,6 +17,12 @@ export interface BaseEntry {
   specialist: string;
   diagnosisCodes?: Array<string>;
 }
+export interface NewBaseEntry {
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCodes?: Array<string>;
+}
 
 export interface Discharge {
   date: string;
@@ -31,13 +37,22 @@ export interface SickLeave {
 // 1. Define HospitalEntry conforming to the image's example data
 export interface HospitalEntry extends BaseEntry {
   type: "Hospital";
-  discharge: Discharge;
+  discharge?: Discharge;
+}
+export interface NewHospitalEntry extends NewBaseEntry {
+  type: "Hospital";
+  discharge?: Discharge;
 }
 
 // 2. Define OccupationalHealthcareEntry
 export interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare";
-  employerName: string;
+  employerName?: string;
+  sickLeave?: SickLeave;
+}
+export interface NewOccupationalHealthcareEntry extends NewBaseEntry {
+  type: "OccupationalHealthcare";
+  employerName?: string;
   sickLeave?: SickLeave;
 }
 
@@ -53,12 +68,21 @@ export interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
 }
+export interface NewHealthCheckEntry extends NewBaseEntry {
+  type: "HealthCheck";
+  healthCheckRating: HealthCheckRating;
+}
 
 // 4. Create the final Entry union type
 export type Entry =
   | HospitalEntry
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
+
+export type NewEntry =
+  | NewHospitalEntry
+  | NewOccupationalHealthcareEntry
+  | NewHealthCheckEntry;
 
 // 5. Update your Patient interface to include the entries array
 export interface Patient {
