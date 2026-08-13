@@ -12,15 +12,22 @@ import {
   Button,
 } from "@mui/material";
 import { SyntheticEvent, useState } from "react";
-import { Diagnosis, NewEntry } from "../../types";
+import { Diagnosis, NewEntry, Entry } from "../../types";
 import patientService from "../../services/patients";
 
 type DiagnosisProps = {
   allDiagnosesCodes: Diagnosis[];
   patientId: string;
+  onSubmitSuccess: (newEntry: Entry) => void; // Added matching signature here
 };
 
-const AddEntryFrom = ({ allDiagnosesCodes, patientId }: DiagnosisProps) => {
+const AddEntryFrom = ({
+  allDiagnosesCodes,
+  patientId,
+  onSubmitSuccess,
+}: DiagnosisProps) => {
+  const [showForm, setShowForm] = useState<boolean>(false);
+
   const [entryType, setEntryType] = useState<NewEntry["type"] | "">("");
   const [date, setDate] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -61,6 +68,7 @@ const AddEntryFrom = ({ allDiagnosesCodes, patientId }: DiagnosisProps) => {
       </FormControl>
     );
   }
+
   function cancelButtonHandler() {
     setEntryType("");
     setDate("");
@@ -68,6 +76,8 @@ const AddEntryFrom = ({ allDiagnosesCodes, patientId }: DiagnosisProps) => {
     setSpecialist("");
     setDiagnosisCodes([]);
     setHealthCheckRating(0);
+
+    setShowForm(false);
   }
 
   async function formHandler(e: SyntheticEvent) {
@@ -108,11 +118,32 @@ const AddEntryFrom = ({ allDiagnosesCodes, patientId }: DiagnosisProps) => {
         alert("Please select a valid entry type");
         return;
     }
-    const entryData = await patientService.createPatientEntry(
-      entryPayload,
-      patientId,
+
+    try {
+      const entryData: Entry = await patientService.createPatientEntry(
+        entryPayload,
+        patientId,
+      );
+
+      onSubmitSuccess(entryData);
+
+      cancelButtonHandler();
+    } catch (error) {
+      console.error("Error creating medical entry details:", error);
+    }
+  }
+
+  if (!showForm) {
+    return (
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{ marginTop: "1em" }}
+        onClick={() => setShowForm(true)}
+      >
+        Add New Entry
+      </Button>
     );
-    console.log("entryy", entryData);
   }
 
   return (
@@ -133,7 +164,9 @@ const AddEntryFrom = ({ allDiagnosesCodes, patientId }: DiagnosisProps) => {
         <Select
           label="Entry Type"
           value={entryType}
-          onChange={({ target }) => setEntryType(target.value)}
+          onChange={({ target }) =>
+            setEntryType(target.value as NewEntry["type"])
+          }
           required
         >
           <MenuItem value="HealthCheck">Health Check</MenuItem>
@@ -179,7 +212,9 @@ const AddEntryFrom = ({ allDiagnosesCodes, patientId }: DiagnosisProps) => {
           <Select
             label="Health Check Rating"
             value={healthCheckRating}
-            onChange={({ target }) => setHealthCheckRating(target.value)}
+            onChange={({ target }) =>
+              setHealthCheckRating(Number(target.value))
+            }
           >
             <MenuItem value={0}>0 -- Healthy</MenuItem>
             <MenuItem value={1}>1 -- Low Risk</MenuItem>

@@ -16,16 +16,13 @@ const EntryDetails = ({ entries, diagnosesCodes }: EntryProps) => {
     if (type === "OccupationalHealthcare") return <WorkIcon />;
     if (type === "HealthCheck") return <MedicalServicesIcon />;
   }
-    function heartIconType(rating: number){
-        if(rating === 0)
-            return <FavoriteIcon sx={{ color: "green" }} />;
-        if(rating === 1)
-            return <FavoriteIcon sx={{ color: "yellow" }} />;
-        if(rating === 2)
-            return <FavoriteIcon sx={{ color: "orange" }} />;
-        if(rating === 3)
-            return <FavoriteIcon sx={{ color: "red" }} />;
-    }
+
+  function heartIconType(rating: number) {
+    if (rating === 0) return <FavoriteIcon sx={{ color: "green" }} />;
+    if (rating === 1) return <FavoriteIcon sx={{ color: "yellow" }} />;
+    if (rating === 2) return <FavoriteIcon sx={{ color: "orange" }} />;
+    if (rating === 3) return <FavoriteIcon sx={{ color: "red" }} />;
+  }
 
   return (
     entries &&
@@ -48,9 +45,23 @@ const EntryDetails = ({ entries, diagnosesCodes }: EntryProps) => {
         <Typography variant="subtitle1">
           <i>{entry.description}</i>
         </Typography>
-        {entry.type === "HealthCheck"
-          ? heartIconType(entry.healthCheckRating)
-          : ""}
+
+
+        {entry.type === "HealthCheck" && heartIconType(entry.healthCheckRating)}
+
+        {entry.type === "Hospital" && (
+          <Typography variant="subtitle1">
+            Discharge: {entry?.discharge?.date} —{" "}
+            <i>{entry?.discharge?.criteria}</i>
+          </Typography>
+        )}
+
+        {entry.type === "OccupationalHealthcare" && entry.sickLeave && (
+          <Typography variant="subtitle1">
+            Sick Leave: {entry.sickLeave.startDate} to {entry.sickLeave.endDate}
+          </Typography>
+        )}
+
         <Typography variant="subtitle1">
           diagnose by {entry.specialist}
         </Typography>

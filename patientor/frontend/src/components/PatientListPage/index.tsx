@@ -18,6 +18,7 @@ import HealthRatingBar from "../HealthRatingBar";
 
 import patientService from "../../services/patients";
 import { Link } from "react-router-dom";
+import { Link as MuiLink } from "@mui/material";
 
 interface Props {
   patients: Patient[];
@@ -79,7 +80,13 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
           {Object.values(patients).map((patient: Patient) => (
             <TableRow key={patient.id}>
               <TableCell>
-                <Link to={`patients/${patient.id}`}>{patient.name}</Link>
+                <MuiLink
+                  component={Link}
+                  to={`patients/${patient.id}`}
+                  underline="none"
+                >
+                  {patient.name}
+                </MuiLink>
               </TableCell>
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>

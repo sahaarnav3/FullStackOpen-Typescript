@@ -58,12 +58,12 @@ export const NewHospitalEntrySchema = NewBaseEntrySchema.extend({
 
 export const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({
   type: z.literal("OccupationalHealthcare"),
-  employerName: z.string(),
+  employerName: z.string().optional(),
   sickLeave: SickLeaveSchema.optional(),
 });
 export const NewOccupationalHealthcareEntrySchema = NewBaseEntrySchema.extend({
   type: z.literal("OccupationalHealthcare"),
-  employerName: z.string(),
+  employerName: z.string().optional(),
   sickLeave: SickLeaveSchema.optional(),
 });
 
@@ -99,7 +99,7 @@ export const NewPatientEntrySchema = z.object({
     .string()
     .trim()
     .min(1, { message: "Occupation cannot be empty" }),
-  entries: z.array(EntrySchema),
+  entries: z.array(EntrySchema).optional(),
 });
 
 export type NewPatientEntry = z.infer<typeof NewPatientEntrySchema>;
